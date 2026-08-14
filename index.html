@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CN Squad — Ticketing Prototype</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f5f6f8;color:#172033;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #dddfe5;padding:14px 20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+h1{font-size:20px;margin:0 20px 0 0}
+button{border:1px solid #d5d9e0;background:#fff;border-radius:8px;padding:9px 13px;cursor:pointer;color:#344054}
+button:hover{background:#f0f2f5}
+button.active{background:#8bd600;border-color:#8bd600;color:#111;font-weight:700}
+main{padding:22px}
+.viewer{max-width:1500px;margin:auto;background:#fff;border:1px solid #dfe3e9;border-radius:14px;overflow:hidden;box-shadow:0 5px 25px rgba(0,0,0,.06)}
+.screen{display:none;padding:12px;background:#eef0f3}
+.screen.active{display:block}
+.screen img{display:block;width:100%;height:auto;border-radius:5px}
+.note{max-width:1500px;margin:16px auto;color:#667085;font-size:13px}
+.code-panel{max-width:1500px;margin:20px auto;background:#151922;border-radius:12px;overflow:hidden}
+.code-head{display:flex;justify-content:space-between;align-items:center;color:#fff;padding:13px 16px;background:#202632}
+.copy{background:#8bd600;color:#111;border:0;font-weight:700}
+pre{margin:0;padding:20px;overflow:auto;color:#e9edf3;font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;white-space:pre-wrap}
+</style>
+</head>
+<body>
+<header>
+<h1>CN Squad — Ticketing Prototype</h1>
+<button class="tab active" data-screen="all-tickets">All Tickets</button>
+<button class="tab" data-screen="create-ticket">Create Ticket</button>
+<button class="tab" data-screen="received-tickets">Received Tickets</button>
+<button class="tab" data-screen="ticket-detail">Ticket Detail</button>
+<button class="tab" data-screen="hod-ticket-detail">HOD Detail</button>
+</header>
+
+<main>
+<div class="viewer">
+<section class="screen active" id="all-tickets"><img src="assets/all-tickets.png" alt="All Tickets"></section>
+<section class="screen" id="create-ticket"><img src="assets/create-ticket.png" alt="Create Ticket"></section>
+<section class="screen" id="received-tickets"><img src="assets/received-tickets.png" alt="Received Tickets"></section>
+<section class="screen" id="ticket-detail"><img src="assets/ticket-detail.png" alt="Ticket Detail"></section>
+<section class="screen" id="hod-ticket-detail"><img src="assets/hod-ticket-detail.png" alt="HOD Ticket Detail"></section>
+</div>
+
+<p class="note">All five supplied design screens are bundled locally. Use the tabs to switch between them.</p>
+
+<div class="code-panel">
+<div class="code-head"><span>index.html — source</span><button class="copy" onclick="copyCode()">Copy code</button></div>
+<pre id="code"></pre>
+</div>
+</main>
+
+<script>
+const tabs=document.querySelectorAll('.tab');
+const screens=document.querySelectorAll('.screen');
+
+tabs.forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    tabs.forEach(t=>t.classList.remove('active'));
+    screens.forEach(s=>s.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.screen).classList.add('active');
+  });
+});
+
+const source=document.documentElement.outerHTML.replace(/<pre id="code">[\s\S]*?<\/pre>/,'<pre id="code"></pre>');
+document.getElementById('code').textContent=source;
+
+function copyCode(){
+  navigator.clipboard.writeText(source).then(()=>{
+    const b=document.querySelector('.copy');
+    const old=b.textContent;
+    b.textContent='Copied!';
+    setTimeout(()=>b.textContent=old,1200);
+  });
+}
+</script>
+</body>
+</html>
